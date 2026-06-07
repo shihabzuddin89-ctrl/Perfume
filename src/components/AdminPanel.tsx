@@ -219,11 +219,7 @@ export default function AdminPanel({
             </div>
           )}
 
-          <div className="text-[10px] text-zinc-400 leading-relaxed font-semibold pt-2">
-            🔑 Owner account: <span className="font-mono text-zinc-600 select-all font-bold">shihabzuddin89@gmail.com</span>
-            <br />
-            🧪 Reviewer passkey: <span className="font-mono text-zinc-600 font-bold">Vault2026</span>
-          </div>
+
         </motion.div>
       </div>
     );
