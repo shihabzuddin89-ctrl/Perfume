@@ -1,0 +1,6 @@
+{
+  "name": "Buy Perfume Bangladesh",
+  "description": "Premium decants and original designer perfumes in Bangladesh with express delivery and secure bKash, Nagad, and Cash on Delivery payments.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

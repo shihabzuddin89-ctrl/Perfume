@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Perfume": {
+      "title": "Perfume",
+      "description": "Represents a perfume item or decant in the store inventory.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier of the perfume." },
+        "name": { "type": "string", "description": "Name of the perfume fragrance." },
+        "brand": { "type": "string", "description": "Brand name." },
+        "originalPrice": { "type": "number", "description": "Original retail price in BDT." },
+        "discountPrice": { "type": "number", "description": "Discounted sales price in BDT." },
+        "rating": { "type": "number", "description": "Average user rating out of 5." },
+        "reviewsCount": { "type": "number", "description": "Total reviews count." },
+        "description": { "type": "string", "description": "Fragrance description and accords." },
+        "image": { "type": "string", "description": "Image URL or illustration of the perfume." },
+        "category": { "type": "string", "description": "Fragrance category (men, women, unisex, decants, attar)." },
+        "volumeOptions": { "type": "array", "description": "Available stock volumes or decant options." },
+        "priceByVolume": { "type": "object", "description": "Key-value pair mapping volume string to custom price." },
+        "stockStatus": { "type": "string", "description": "In Stock, Low Stock, or Out of Stock." },
+        "isFeatured": { "type": "boolean", "description": "Whether highlighted on the landing page." },
+        "notes": { "type": "array", "description": "Array of scent notes (top, middle, base accords)." }
+      },
+      "required": ["id", "name", "brand", "discountPrice", "category", "image"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Represents a customer purchase order and shipping details.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Order unique confirmation number." },
+        "customerName": { "type": "string", "description": "Full name of the buyer." },
+        "customerPhone": { "type": "string", "description": "Bangladeshi contact phone number." },
+        "shippingAddress": { "type": "string", "description": "Detailed home delivery address." },
+        "district": { "type": "string", "description": "Dhaka or Outside Dhaka for courier charge mapping." },
+        "deliveryCharge": { "type": "number", "description": "Dynamic delivery cost in BDT." },
+        "items": { "type": "array", "description": "Details of ordered perfumes, quantities, selected volumes, prices." },
+        "totalAmount": { "type": "number", "description": "Total order amount including delivery charge." },
+        "paymentMethod": { "type": "string", "description": "COD, bKash, or Nagad." },
+        "paymentStatus": { "type": "string", "description": "Pending, Processing, Paid, or Failed." },
+        "paymentDetails": { "type": "object", "description": "Metadata from the payment flow (e.g. Transaction ID, account number)." },
+        "orderStatus": { "type": "string", "description": "Pending, Packaged, Shipped, Delivered, or Cancelled." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of order creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Timestamp of last state modification." }
+      },
+      "required": ["id", "customerName", "customerPhone", "shippingAddress", "district", "items", "totalAmount", "paymentMethod", "paymentStatus", "orderStatus"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Represents customer review rating and feedback left for a fragrance.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "perfumeId": { "type": "string" },
+        "userName": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "perfumeId", "userName", "rating", "comment"]
+    }
+  },
+  "firestore": {
+    "perfumes": {
+      "schema": "Perfume",
+      "description": "Store database catalog of luxury fragrances and price variants."
+    },
+    "orders": {
+      "schema": "Order",
+      "description": "Customer perfume purchases for bKash/Nagad validation and fulfillment."
+    },
+    "reviews": {
+      "schema": "Review",
+      "description": "Verified purchase feedback reviews for various scents."
+    }
+  }
+}

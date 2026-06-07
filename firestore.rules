@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Generic verification helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- PERFUMES ---
+    match /perfumes/{perfumeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isValidId(perfumeId) && isValidPerfume(incoming());
+    }
+
+    function isValidPerfume(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.name is string && data.name.size() <= 100
+        && data.brand is string && data.brand.size() <= 100
+        && data.discountPrice is number && data.discountPrice >= 0
+        && data.category is string && (data.category == 'men' || data.category == 'women' || data.category == 'unisex' || data.category == 'decants' || data.category == 'attar')
+        && data.image is string && data.image.size() <= 1000;
+    }
+
+    // --- ORDERS ---
+    match /orders/{orderId} {
+      allow get, list: if true;
+      allow create: if isValidId(orderId) && isValidOrder(incoming());
+      allow update: if isValidId(orderId) && isValidOrder(incoming());
+      allow delete: if false;
+    }
+
+    function isValidOrder(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.customerName is string && data.customerName.size() <= 150
+        && data.customerPhone is string && data.customerPhone.size() <= 20
+        && data.shippingAddress is string && data.shippingAddress.size() <= 1000
+        && data.district is string && (data.district == 'Dhaka' || data.district == 'Outside Dhaka')
+        && data.totalAmount is number && data.totalAmount >= 0
+        && data.paymentMethod is string && (data.paymentMethod == 'COD' || data.paymentMethod == 'bKash' || data.paymentMethod == 'Nagad')
+        && data.paymentStatus is string && (data.paymentStatus == 'Pending' || data.paymentStatus == 'Paid' || data.paymentStatus == 'Failed')
+        && data.orderStatus is string && (data.orderStatus == 'Pending' || data.orderStatus == 'Processing' || data.orderStatus == 'Packaged' || data.orderStatus == 'Shipped' || data.orderStatus == 'Delivered' || data.orderStatus == 'Cancelled');
+    }
+
+    // --- REVIEWS ---
+    match /reviews/{reviewId} {
+      allow get, list: if true;
+      allow create: if isValidId(reviewId) && isValidReview(incoming());
+      allow update, delete: if false;
+    }
+
+    function isValidReview(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.perfumeId is string && data.perfumeId.size() <= 128
+        && data.userName is string && data.userName.size() <= 100
+        && data.rating is number && data.rating >= 1 && data.rating <= 5
+        && data.comment is string && data.comment.size() <= 2000;
+    }
+  }
+}
